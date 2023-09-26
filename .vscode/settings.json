@@ -1,0 +1,55 @@
+{
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "python.formatting.provider": "none",
+  "cSpell.words": ["fontawesome", "fortawesome", "grayp"],
+  "workbench.colorTheme": "Winter is Coming (Dark Blue)",
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.associations": {
+    "*.js": "javascriptreact"
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "explorer.confirmDelete": false,
+  "workbench.colorCustomizations": {
+    "[Material Theme Palenight High Contrast]": {}
+  },
+  "terminal.integrated.tabs.enabled": true,
+  "json.maxItemsComputed": 100000,
+  "editor.maxTokenizationLineLength": 800000,
+  "yaml.schemas": {
+    "file:///c%3A/Users/Khazix/.vscode/extensions/atlassian.atlascode-2.10.12/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+  },
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "redhat.telemetry.enabled": true,
+  "editor.bracketPairColorization.enabled": false,
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": false,
+    "editor.defaultFormatter": "Dart-Code.dart-code"
+  },
+  "go.toolsManagement.autoUpdate": true,
+  "dart.previewFlutterUiGuides": true,
+  "dart.previewFlutterUiGuidesCustomTracking": true,
+  "editor.unicodeHighlight.nonBasicASCII": false,
+  "editor.formatOnSave": true,
+  "vscode-pets.petSize": "medium",
+  "css.lint.unknownAtRules": "ignore",
+  "cmake.configureOnOpen": false,
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "explorer.confirmDragAndDrop": false,
+  "editor.minimap.enabled": false,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}
