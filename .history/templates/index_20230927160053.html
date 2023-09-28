@@ -26,40 +26,12 @@
             <form method="post" accept-charset="utf-8">
               <div class="row">
                 <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Select you location</b></label>
-                  <select
-                    class="select-picker form-control"
-                    id="location"
-                    name="location"
-                  >
-                    <option>nimman</option>
-                    <option>change phueak</option>
-                    <option>suthep</option>
-                    <option>faham</option>
-                    <option>muang</option>
-                  </select>
-                </div>
-                <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Select Number of Bedrooms:</b></label>
-                  <select
-                    class="select-picker form-control"
-                    id="bedroom"
-                    name="bedroom"
-                  >
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                  </select>
-                </div>
-
-                <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Parking Space</b></label>
+                  <label><b> Parking Space </b> </label>
                   <select
                     class="select-picker form-control"
                     id="parking"
                     name="parking"
-                    required="required"
+                    required="requied"
                   >
                     <option>1</option>
                     <option>2</option>
@@ -67,20 +39,20 @@
                   </select>
                 </div>
                 <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Select Number of Bedrooms:</b></label>
+                  <label><b> Select Number of Bedrooms: </b> </label>
                   <select
                     class="select-picker form-control"
                     id="bedroom"
                     name="bedroom"
                   >
-                    <option>0</option>
+                    <option>Studio</option>
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
                   </select>
                 </div>
                 <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Select Number of Bathrooms:</b></label>
+                  <label><b> Select Number of Bathrooms: </b> </label>
                   <select
                     class="select-picker form-control"
                     id="bathroom"
@@ -93,7 +65,7 @@
                   </select>
                 </div>
                 <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Enter Square Meter</b></label>
+                  <label><b> Enter Square Meter </b> </label>
                   <input
                     type="text"
                     class="form-control"
@@ -102,11 +74,10 @@
                     placeholder="Enter Square Meter"
                   />
                 </div>
-                <div class="col-md-12 form-group" style="text-align: center">
+                <div class="col-md-12 form-group">
                   <button
                     class="btn btn-primary form-control"
-                    onclick="predictPrice()"
-                    type="button"
+                    onclick="send_data()"
                   >
                     Predict Price
                   </button>
@@ -124,36 +95,34 @@
     </div>
 
     <script>
-      function predictPrice() {
-        // Get user-selected values from the form elements
-        var parking = document.getElementById("parking").value;
-        var sqm = document.getElementById("sqm").value;
-        var bedroom = document.getElementById("bedroom").value;
-        var bathroom = document.getElementById("bathroom").value;
+      function form_handler(event) {
+        event.preventDefault();
+      }
 
-        var data = {
-          sqm: sqm,
-          bedroom: bedroom,
-          bathroom: bathroom,
-          parking: parking,
-        };
+      function send_data() {
+        document.querySelector("form").addEventListener("submit", form_handler);
 
-        // Send the data to the Flask server for prediction
+        var fd = new FormData(document.querySelector("form"));
+
         var xhr = new XMLHttpRequest();
+
         xhr.open("POST", "/predict", true);
         document.getElementById("prediction").innerHTML =
           "Wait Predicting Price!...";
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8"); // Set the content type to JSON
         xhr.onreadystatechange = function () {
           if (xhr.readyState == XMLHttpRequest.DONE) {
-            document.getElementById("prediction").innerHTML = xhr.responseText;
+            document.getElementById("prediction").innerHTML =
+              "Prediction:  ฿ " + xhr.responseText;
           }
         };
-        xhr.send(JSON.stringify(data)); // Send data as JSON
+        xhr.onload = function () {};
+
+        xhr.send(fd);
       }
     </script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
+
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
       integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"

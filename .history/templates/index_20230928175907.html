@@ -23,36 +23,8 @@
             <h1>Welcome to Condo Price Predictor</h1>
           </div>
           <div class="card-body">
-            <form method="post" accept-charset="utf-8">
+            <form id="prediction-form">
               <div class="row">
-                <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Select you location</b></label>
-                  <select
-                    class="select-picker form-control"
-                    id="location"
-                    name="location"
-                  >
-                    <option>nimman</option>
-                    <option>change phueak</option>
-                    <option>suthep</option>
-                    <option>faham</option>
-                    <option>muang</option>
-                  </select>
-                </div>
-                <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Select Number of Bedrooms:</b></label>
-                  <select
-                    class="select-picker form-control"
-                    id="bedroom"
-                    name="bedroom"
-                  >
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                  </select>
-                </div>
-
                 <div class="col-md-6 form-group" style="text-align: center">
                   <label><b>Parking Space</b></label>
                   <select
@@ -61,9 +33,9 @@
                     name="parking"
                     required="required"
                   >
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
                   </select>
                 </div>
                 <div class="col-md-6 form-group" style="text-align: center">
@@ -73,10 +45,10 @@
                     id="bedroom"
                     name="bedroom"
                   >
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
                   </select>
                 </div>
                 <div class="col-md-6 form-group" style="text-align: center">
@@ -86,10 +58,10 @@
                     id="bathroom"
                     name="bathroom"
                   >
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
                   </select>
                 </div>
                 <div class="col-md-6 form-group" style="text-align: center">
@@ -102,11 +74,11 @@
                     placeholder="Enter Square Meter"
                   />
                 </div>
-                <div class="col-md-12 form-group" style="text-align: center">
+                <div class="col-md-12 form-group">
                   <button
+                    type="button"
                     class="btn btn-primary form-control"
                     onclick="predictPrice()"
-                    type="button"
                   >
                     Predict Price
                   </button>
@@ -116,7 +88,7 @@
             <br />
 
             <div class="col-md-12" style="text-align: center">
-              <h1><span id="prediction"></span></h1>
+              <h1>Prediction: <span id="prediction"></span></h1>
             </div>
           </div>
         </div>
@@ -127,15 +99,16 @@
       function predictPrice() {
         // Get user-selected values from the form elements
         var parking = document.getElementById("parking").value;
-        var sqm = document.getElementById("sqm").value;
         var bedroom = document.getElementById("bedroom").value;
         var bathroom = document.getElementById("bathroom").value;
+        var sqm = document.getElementById("sqm").value;
 
+        // Create a JSON object to send to the Flask server
         var data = {
-          sqm: sqm,
+          parking: parking,
           bedroom: bedroom,
           bathroom: bathroom,
-          parking: parking,
+          sqm: sqm,
         };
 
         // Send the data to the Flask server for prediction
@@ -143,10 +116,16 @@
         xhr.open("POST", "/predict", true);
         document.getElementById("prediction").innerHTML =
           "Wait Predicting Price!...";
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8"); // Set the content type to JSON
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.onreadystatechange = function () {
-          if (xhr.readyState == XMLHttpRequest.DONE) {
-            document.getElementById("prediction").innerHTML = xhr.responseText;
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              document.getElementById("prediction").innerHTML =
+                "Prediction: ฿ " + JSON.parse(xhr.responseText).prediction;
+            } else {
+              document.getElementById("prediction").innerHTML =
+                "Error: An error occurred";
+            }
           }
         };
         xhr.send(JSON.stringify(data)); // Send data as JSON

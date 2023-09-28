@@ -26,35 +26,7 @@
             <form method="post" accept-charset="utf-8">
               <div class="row">
                 <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Select you location</b></label>
-                  <select
-                    class="select-picker form-control"
-                    id="location"
-                    name="location"
-                  >
-                    <option>nimman</option>
-                    <option>change phueak</option>
-                    <option>suthep</option>
-                    <option>faham</option>
-                    <option>muang</option>
-                  </select>
-                </div>
-                <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Select Number of Bedrooms:</b></label>
-                  <select
-                    class="select-picker form-control"
-                    id="bedroom"
-                    name="bedroom"
-                  >
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                  </select>
-                </div>
-
-                <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Parking Space</b></label>
+                  <label><b> Parking Space </b> </label>
                   <select
                     class="select-picker form-control"
                     id="parking"
@@ -67,7 +39,7 @@
                   </select>
                 </div>
                 <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Select Number of Bedrooms:</b></label>
+                  <label><b> Select Number of Bedrooms: </b> </label>
                   <select
                     class="select-picker form-control"
                     id="bedroom"
@@ -80,7 +52,7 @@
                   </select>
                 </div>
                 <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Select Number of Bathrooms:</b></label>
+                  <label><b> Select Number of Bathrooms: </b> </label>
                   <select
                     class="select-picker form-control"
                     id="bathroom"
@@ -93,7 +65,7 @@
                   </select>
                 </div>
                 <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Enter Square Meter</b></label>
+                  <label><b> Enter Square Meter </b> </label>
                   <input
                     type="text"
                     class="form-control"
@@ -107,8 +79,16 @@
                     class="btn btn-primary form-control"
                     onclick="predictPrice()"
                     type="button"
+                    <!--
+                    Use
+                    type="button"
+                    to
+                    prevent
+                    form
+                    submission
+                    --
                   >
-                    Predict Price
+                    > Predict Price
                   </button>
                 </div>
               </div>
@@ -131,11 +111,12 @@
         var bedroom = document.getElementById("bedroom").value;
         var bathroom = document.getElementById("bathroom").value;
 
+        // Create a JSON object to send to the Flask server
         var data = {
+          parking: parking,
           sqm: sqm,
           bedroom: bedroom,
           bathroom: bathroom,
-          parking: parking,
         };
 
         // Send the data to the Flask server for prediction
@@ -146,7 +127,8 @@
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8"); // Set the content type to JSON
         xhr.onreadystatechange = function () {
           if (xhr.readyState == XMLHttpRequest.DONE) {
-            document.getElementById("prediction").innerHTML = xhr.responseText;
+            document.getElementById("prediction").innerHTML =
+              "Prediction:  ฿ " + xhr.responseText;
           }
         };
         xhr.send(JSON.stringify(data)); // Send data as JSON
@@ -154,6 +136,7 @@
     </script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
+
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
       integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"

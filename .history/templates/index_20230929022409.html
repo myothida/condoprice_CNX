@@ -138,6 +138,14 @@
           parking: parking,
         };
 
+        // Create a JSON object to send to the Flask server
+        var data = {
+          parking: parking,
+          sqm: sqm,
+          bedroom: bedroom,
+          bathroom: bathroom,
+        };
+
         // Send the data to the Flask server for prediction
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/predict", true);

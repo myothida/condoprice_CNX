@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, jsonify
 import pandas as pd
 import pickle
-
+import logging
 
 
 app = Flask(__name__)
 
 # Load the trained model
-with open('BestModel_CNX.pkl', 'rb') as model_file:
+with open('condo_price_model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
 # Define the index route

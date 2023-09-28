@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, jsonify
 import pandas as pd
 import pickle
-
+import logging
 
 
 app = Flask(__name__)
 
 # Load the trained model
-with open('BestModel_CNX.pkl', 'rb') as model_file:
+with open('condo_price_model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
 # Define the index route
@@ -19,7 +19,6 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.method == 'POST':
-        
         # Extract user input from the JSON data sent by the front-end
         data = request.get_json()
 
@@ -28,7 +27,6 @@ def predict():
         bedroom = int(data['bedroom'])
         bathroom = int(data['bathroom'])
         parking = int(data['parking'])
-        
         
         print("User selected:")
         print(f"Square Meter: {sqm}")
@@ -44,7 +42,7 @@ def predict():
         prediction = model.predict(input_data)[0]
 
         # Return the prediction result as JSON
-        return jsonify({'prediction':prediction})
+        return jsonify({'prediction': prediction})
 
 # Run the Flask app
 if __name__ == "__main__":

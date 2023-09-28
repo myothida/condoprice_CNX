@@ -26,17 +26,16 @@
             <form method="post" accept-charset="utf-8">
               <div class="row">
                 <div class="col-md-6 form-group" style="text-align: center">
-                  <label><b>Select you location</b></label>
+                  <label><b>Parking Space</b></label>
                   <select
                     class="select-picker form-control"
-                    id="location"
-                    name="location"
+                    id="parking"
+                    name="parking"
+                    required="required"
                   >
-                    <option>nimman</option>
-                    <option>change phueak</option>
-                    <option>suthep</option>
-                    <option>faham</option>
-                    <option>muang</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
                   </select>
                 </div>
                 <div class="col-md-6 form-group" style="text-align: center">
@@ -138,6 +137,14 @@
           parking: parking,
         };
 
+        // Create a JSON object to send to the Flask server
+        var data = {
+          parking: parking,
+          sqm: sqm,
+          bedroom: bedroom,
+          bathroom: bathroom,
+        };
+
         // Send the data to the Flask server for prediction
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/predict", true);
@@ -146,7 +153,8 @@
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8"); // Set the content type to JSON
         xhr.onreadystatechange = function () {
           if (xhr.readyState == XMLHttpRequest.DONE) {
-            document.getElementById("prediction").innerHTML = xhr.responseText;
+            document.getElementById("prediction").innerHTML =
+              "Prediction:  ฿ " + xhr.responseText;
           }
         };
         xhr.send(JSON.stringify(data)); // Send data as JSON

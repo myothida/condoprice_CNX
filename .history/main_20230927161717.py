@@ -1,0 +1,53 @@
+from flask import Flask, render_template, request 
+import pandas as pd
+import pickle
+import numpy as np
+
+
+app = Flask(__name__)
+data = pd.read_csv('data.csv')
+pipe = pickle.load(open('BestModel_CNX.pkl','rb'))
+
+
+@app.route('/')
+def index():
+
+    return render_template('index.html' )
+
+
+
+
+# Assuming the order of features in your model is ['sqm', 'bedroom', 'bathroom', 'parking']
+@app.route('/predict', methods=['POST'])
+def predict():
+    sqm = float(request.form.get('sqm'))
+    bedroom = int(request.form.get('bedroom'))
+    bathroom = int(request.form.get('bathroom'))
+    parking = int(request.form.get('parking'))
+
+    # Create a DataFrame with the correct order of features
+    input_data = pd.DataFrame([[sqm, bedroom, bathroom, parking]], columns=['sqm', 'bedroom', 'bathroom', 'parking'])
+
+    # Print the input_data for debugging
+    print("Input Data:")
+    print(input_data)
+
+    try:
+        # Make the prediction using the model
+        prediction = pipe.predict(input_data)[0] * 1e5
+        return str(np.round(prediction, 2))
+    except ValueError as e:
+        # Print error message for debugging
+        print(f"Prediction error: {str(e)}")
+        # You can choose to handle the error or return an empty response here
+        return ""
+    except Exception as e:
+        # Handle other exceptions as needed
+        print(f"Error: {str(e)}")
+        return ""
+
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5001)
+
+

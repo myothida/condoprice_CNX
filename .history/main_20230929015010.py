@@ -1,14 +1,14 @@
 from flask import Flask, render_template, request, jsonify
 import pandas as pd
 import pickle
-
-
+import numpy as np
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 
 app = Flask(__name__)
 
 # Load the trained model
-with open('BestModel_CNX.pkl', 'rb') as model_file:
-    model = pickle.load(model_file)
+with open('data.pkl', 'rb') as file:
+    model = pickle.load(file)
 
 # Define the index route
 @app.route('/')
@@ -19,7 +19,6 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.method == 'POST':
-        
         # Extract user input from the JSON data sent by the front-end
         data = request.get_json()
 
@@ -28,23 +27,21 @@ def predict():
         bedroom = int(data['bedroom'])
         bathroom = int(data['bathroom'])
         parking = int(data['parking'])
-        
-        
-        print("User selected:")
-        print(f"Square Meter: {sqm}")
-        print(f"Bedrooms: {bedroom}")
-        print(f"Bathrooms: {bathroom}")
-        print(f"Parking Spaces: {parking}")
 
         # Create a DataFrame with the correct order of features
-        input_data = pd.DataFrame({'bedroom': [bedroom], 'bathroom': [bathroom], 'sqm': [sqm], 'parking': [parking]})
+        input_data = pd.DataFrame([[ sqm, bedroom, bathroom, parking]], columns=[ 'sqm', 'bedroom', 'bathroom', 'parking'])
         
+        print("sqm:", sqm)
+        print("bedroom:", bedroom)
+        print("bathroom:", bathroom)
+        print("parking:", parking)
 
         # Make the prediction using the model
-        prediction = model.predict(input_data)[0]
+        prediction = model.predict(input_data)[0] * 1e5
 
         # Return the prediction result as JSON
-        return jsonify({'prediction':prediction})
+        return jsonify({'prediction': np.round(prediction, 2)})
+
 
 # Run the Flask app
 if __name__ == "__main__":
